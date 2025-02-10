@@ -1,0 +1,83 @@
+clear;clc;close all;
+
+im=rgb2gray(double(imread('zubr.jpg'))/255);
+
+subplot(1,2,1);
+imshow(im);
+
+k=3;
+f=ones(k)/k^2;
+fim=imfilter(im,f); - filtr dolnoprzepustowy/uśredniający
+subplot(1,2,2);
+imshow(fim);
+
+k=3;
+f=-ones(k);
+f((k+1)/2,(k+1)/2)=k^2;
+fim=imfilter(im,f);
+imshow(fim);
+
+k=3;
+f=-ones(k);
+f((k+1)/2,(k+1)/2)=k^2-1; - filtr krawędziowy
+fim=imfilter(im,f);
+subplot(a,b,4);
+imshow(fim);
+
+figure;
+subplot(a,b,1);
+imshow(im);
+
+k=3;
+fim=medfilt2(im,[k,k]); - mediana;
+subplot(a,b,2);
+imshow(fim);
+
+t=.=6;
+t=graythresh(im) - automatyczny dobór peaku
+bim=im;
+bim(bim>t)=1;
+bim(bim<=t)=0;
+subplot(a,b,3);
+imshow(bim); - arbitralnie czarno-biały
+
+subplot(a,b,4);
+%imhist(im);
+bim=im;
+bim=imbinarize(im,'adaptive'); - automatycznie adaptywnie
+imshow(bim);
+
+subplot(a,b,4);
+t=.55;
+bim=im;
+bim=imbinarize(im,t);
+bim=~bim; - odwrócenie barw
+imshow(bim);
+
+close;
+close;
+figure;
+
+subplot(a,b,1);
+imshow(im);
+
+subplot(a,b,2);
+t=.55;
+bim=im;
+bim=imbinarize(im,t);
+bim=~bim; - odwrócenie barw
+k=3;
+bim=medfilt2(bim,[k,k]); - odfiltrowanie medianą
+imshow(bim);
+
+ebim=imerode(bim, ones(3)); - erozja
+subplot(a,b,3);
+imshow(ebim);
+
+dbim=imdilate(bim, ones(3)); - dylatacja
+subplot(a,b,4);
+imshow(dbim);
+
+erozja -> dylatacja = otwarcie morfologiczne
+dylatacja -> erozja = zamkniecie morfologiczne
+

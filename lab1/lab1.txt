@@ -1,0 +1,39 @@
+/opt/matlab/MATLAB_2022/bin/matlab
+
+clc - czyścimy konsole
+c=1:10 - sekwencja od 1 do 10
+c=1:2:10 - sekwencja od 1 do 10 co 2
+c=10:-1:1 - sekwencja od 10 do 1
+
+a=[1 2 3; 4,5,6] - indeksujemy od 1
+a(2,[1,3]) - 2 wiersz wartość 1 i 3
+a(2, 1:3) - 2 wiersz i wartości od 1 do 3
+a(1, end) - end ostatnia wartość
+a(1,1:end) == a(1,:) - wypisanie całego 2 wiersza
+a(:,:) - wypisanie całej macierzy
+a(5) - indeksowanie macierzy po kolumnach (wypisze 3)
+a(:) - wypisuje jako wektor
+a(a>2) - wypisuje liczby większe od 2 ale kolumnami
+a(a>2) = 11:14 - wypisuje liczby większe od 2 ale kolumnami zamienione na wartości od 11 do 14
+a(a>2) = 0
+a(:,2)=[] - wstawia pusty wektor 
+ 
+a=[1 2 3; 4,5,6] 
+b=[7,8,9;1,2,3]
+a+b i a-b - działa jak normalne + i - macierzy
+a*b' - działa, bo ' transponuje macierz b, aby rozmiary do mnożenia się zgadzały
+a.*b - mnoży każdą komórkę z jej odpowiednikiem w drugiej macierzy
+a./b  a*2  a+2 - kolejne działania, które działają
+
+x=0:.1:10
+y=sin(x)
+plot(x,y)
+*.fig - zapisuje informacje o wykresie, zakres osi itd, nie zapisuje wykresu
+
+SKRYPTY
+clear; - czyści pamięć ze zmiennych
+ctr+c - przerwanie skryptus
+%komentarz
+%{komentarz blokowy%}
+ctrl+r - komentuje zaznaczony kod
+ctrl+t - odkomentowuje zaznaczony kod

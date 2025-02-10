@@ -1,0 +1,39 @@
+clear;clc;close all;
+
+im=imread('ptaki.jpg');
+
+figure;
+h=3;
+w=2;
+subplot(h,w,1);
+imshow(im(:,:,1));
+subplot(h,w,2);
+imhist(im(:,:,1));
+subplot(h,w,3);
+imshow(im(:,:,2));
+subplot(h,w,4);
+imhist(im(:,:,2));
+subplot(h,w,5);
+imshow(im(:,:,3));
+subplot(h,w,6);
+imhist(im(:,:,3));
+
+----------------------------------
+
+clear;clc;close all;
+
+im=imread('ptaki.jpg');
+
+r=imbinarize(im(:,:,1));
+b=imbinarize(im(:,:,3));
+
+bim=r|~b;
+bim=imopen(bim, ones(5));
+bim=imclose(bim, ones(5));
+
+l=bwlabel(bim);
+n=max(l(:));
+
+a=regionprops(l==4, 'all')
+
+imshow(bim);

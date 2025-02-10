@@ -1,0 +1,91 @@
+clear; clc;
+im = imread('ptaki.jpg');
+
+subplot(3,2,1);
+imshow(im(:,:,1));
+subplot(3,2,2);
+imhist(im(:,:,1));
+
+subplot(3,2,3);
+imshow(im(:,:,2));
+subplot(3,2,4);
+imhist(im(:,:,2));
+
+subplot(3,2,5);
+imshow(im(:,:,3));
+subplot(3,2,6);
+imhist(im(:,:,3));
+
+% t =graythresh(im);
+% t=0.25;
+% bin = im;
+% 
+% bin(bin>t) = 1;
+% bin(bin<=t) = 0;
+% 
+% bin = ~bin;
+% 
+% bin = imdilate(bin, ones(10));
+% 
+% 
+% bin = medfilt2(bin, [10, 10]);
+% 
+% bin = imerode(bin, ones(10,10));
+% bin = bwmorph(bin, "thicken", 10);
+% bin = imdilate(bin, ones(7));
+
+
+% problem akurat byl w tym ze zlewalo sie niebo
+% mozemy sobie wziac t oco jest biale na kaczce w R i to co czarne w B
+% polaczamy to suma logiczna
+
+r = imbinarize(im(:,:,1));
+b = imbinarize(im(:,:,3));
+
+bin = r | ~b;
+
+bin = imopen(bin, ones(5));
+bin = imclose(bin, ones(5));
+% mozemy sobie policzyc te kaczki
+l = bwlabel(bin);
+n = max(l(:));
+figure;
+imshow(bin);
+
+%regionprops - wyciaga informacje - wspolczynniki liczbowy - ksztalty
+a = regionprops(l==4, 'all')
+
+% centroid - srodek - srednia wszystkich wspolrzednych  - srodek masy
+% boundingBox - najmniejszy prostokat w ktory mozna wpisac te nasza kaczke
+% oreintacja - nachylenie osi glownej
+figure;
+imshow(a.Image);
+figure;
+imshow(l==4);
+figure;
+%Perimiter - obwod
+% os fereta - zwiazane z boundingbox  - osie tego boxa
+
+% rysujemy kolo o polu naszej figury i potownje do kola ktora ma taki sam
+% obwod jak nasze kolo
+
+%wsp malinowskiej - R(kola z obwodu) / R(kolo z pola) - 1 -> [0,oo]
+
+% liczymy srednia odleglosc pikseli od srodka masy - najmniejsza dla kola
+% wsp Blira briesa
+% wsp Danielssona
+%wsp haralicha
+%wsp fereta
+% zrobic macierz wsp dla kazdeg gesi% uchwyt do funkcji w matlab do @
+f = {@AO5RBlairBliss, @AO5RCircularityL, @AO5RCircularityS, @AO5RDanielsson, @AO5RFeret, @AO5RHaralick, @AO5RMalinowska, @AO5RShape};
+macierz = zeros(9,8);
+for i = 1:9
+    for j = 1:8
+          macierz(i,j) = f{j}(l==i);
+    end
+end
+macierz;
+mg=mean(macierz);
+sg = std(macierz);
+c=(macierz - mg)./sg; %do 3 odchylen standardowych jest git <- 99.7% wszystkich zdarzen
+

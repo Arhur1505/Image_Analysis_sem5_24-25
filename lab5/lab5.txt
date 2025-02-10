@@ -1,0 +1,78 @@
+clear;clc;close all;
+
+im=rgb2gray(double(imread('kaczki.jpg'))/255);
+
+t=graythresh(im);
+bim=imbinarize(im,t);
+bim=~bim;
+
+k=5;
+
+dbim=imclose(bim, ones(11));
+sk=bwmorph(dbim, 'skeleton', Inf);
+pt=bwmorph(sk, 'branchpoints');
+
+[y,x]=find(pt);
+
+imshow(pt);
+
+----------------
+
+dbim=imclose(bim, ones(11));
+sk=bwmorph(dbim, 'thin', Inf);
+
+imshow(sk);
+
+----------------
+
+dbim=imclose(bim, ones(11));
+sk=bwmorph(dbim, 'shrink', 30);
+
+imshow(sk);
+
+----------------
+
+bim=imclose(bim, ones(11));
+l=bwlabel(bim);
+
+imshow(label2rgb(l));
+imshow(l==2);
+n=max(l(:)) - liczba obiektów
+
+----------------
+
+bim=imclose(bim, ones(11));
+sqt=bwmorph(bim, 'thicken', Inf);
+l=bwlabel(sqt);
+
+imshow(label2rgb(l));
+imshow((l==2).*bim.*im);
+
+----------------
+
+t=graythresh(im);
+bim=imbinarize(im,t);
+bim=~bim;
+
+k=5;
+
+bim=imclose(bim, ones(11));
+d=bwdist(~bim);
+imshow(d, [0, max(d(:))]);
+
+----------------
+
+t=graythresh(im);
+bim=imbinarize(im,t);
+bim=~bim;
+
+k=5;
+bim=imclose(bim, ones(11));
+
+bim([1,end],:)=1;
+bim(:,[1,end])=1;
+d=bwdist(bim);
+d=bwdist(bim, 'chessboard');
+imshow(d, [0, max(d(:))]);
+
+----------------
